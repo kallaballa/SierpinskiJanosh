@@ -1,3 +1,3 @@
 export default {
-  socketUri: 'ws://185.203.117.150:8090'
+  socketUri: 'ws://localhost:8090'
 };
