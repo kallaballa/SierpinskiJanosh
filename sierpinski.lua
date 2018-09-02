@@ -19,7 +19,7 @@ Janosh:subscribe("line", push)
 Janosh:subscribe("clear", push)
 
 -- Open websocket
-Janosh:wsOpen(8080)
+Janosh:wsOpen(8090)
 Janosh:wsOnReceive(receive)
 
 function sierpinski_tri(size)
