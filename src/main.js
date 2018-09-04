@@ -10,7 +10,18 @@ document.addEventListener('DOMContentLoaded', ev => {
   ctx.fillStyle = "rgba(0,0,0,255)";
 
   api.subscribe("update", (value) => {
-	api.update();
+		var arr = JSON.parse(value)
+                var line = atob(arr[1]);
+                var y = arr[0];
+                for(var x = 0; x < line.length; ++x) {
+                        var c = line.charCodeAt(x);
+                        for(var k = 0; k < 8; ++k) {
+                                var m = 0x00000001 << (7 - k);
+                                if((c & m) > 0) {
+                                        ctx.fillRect(x*8+k,y, 1, 1);
+                                }
+                        }
+                }
   });
 
   api.subscribe("clear", (value) => {
@@ -21,18 +32,5 @@ document.addEventListener('DOMContentLoaded', ev => {
   });
 
   api.onReceive((state) => {
-	for(var i = 0; i < state.image.length; ++i) {
-	 	var line = atob(state.image[i]);
-         	var y = i;
-		for(var x = 0; x < line.length; ++x) {
-			var c = line.charCodeAt(x);
-			for(var k = 0; k < 8; ++k) {
-				var m = 0x00000001 << (7 - k);
-				if((c & m) > 0) {
-					ctx.fillRect(x*8+k,y, 1, 1);
-				}
-			}
-		}
-	}
-});
+  });
 });

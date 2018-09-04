@@ -41,14 +41,11 @@ for i = 1, size do
     end
     line = line .. string.char(b)
   end
-  Janosh:append("/image/.", Janosh:enc64(line))
+  Janosh:publish("update","W",JSON:encode({i, Janosh:enc64(line)}))
   m = n
 end
-Janosh:publish("update","W","")
 end
 while true do
-       Janosh:truncate()
-       Janosh:mkarr("/image/.")
        Janosh:publish("clear", "W", "")
        sierpinski_tri(500)
        Janosh:sleep(1000)      
