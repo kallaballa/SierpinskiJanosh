@@ -15,7 +15,7 @@ function push(key, op, value)
 	Janosh:wsBroadcast(JSON:encode({key, op, value}))
 end
 
-Janosh:subscribe("line", push)
+Janosh:subscribe("update", push)
 Janosh:subscribe("clear", push)
 
 -- Open websocket
@@ -25,27 +25,32 @@ Janosh:wsOnReceive(receive)
 function sierpinski_tri(size)
 local m = {}
 m[math.floor(size/2)] = true
-line = {}
 local n
 for i = 1, size do
   n = {}
-  line = ""
-  for j = 1, size do
-    if m[j] then
-      line = line .. "1"
-      n[j+1] = not n[j+1]
-      n[j-1] = not n[j-1]
-    else
-      line = line .. "0";
+  local line = ""
+  for j = 1, math.ceil(size / 8) do
+    local b = 0
+    for k = 1, 8 do
+      if m[j * 8 + k] then
+	local mask = bit.lshift(1,(8-k))
+	b = bit.bor(b,mask);
+        n[j*8+k+1] = not n[j*8+k+1]
+        n[j*8+k-1] = not n[j*8+k-1]
+      end  
     end
+    line = line .. string.char(b)
   end
- Janosh:publish("line","W", JSON:encode({ i, line }))
+  Janosh:append("/image/.", Janosh:enc64(line))
   m = n
 end
-
+Janosh:publish("update","W","")
 end
 while true do
+       Janosh:truncate()
+       Janosh:mkarr("/image/.")
        Janosh:publish("clear", "W", "")
        sierpinski_tri(500)
+       Janosh:sleep(1000)      
 end
 

@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "description": "a sierpinksi triangle renderer written using janosh and janosh.js",
   "dependencies": {
-    "janosh.js": "kallaballa/janosh.js",
-    "sortablejs": "1.1.1",
-    "underscore": "~1.8.2"
+    "janosh.js": "kallaballa/janosh.js"
   },
   "devDependencies": {
     "babelify": "~5.0.4",
